@@ -1,0 +1,4 @@
+.git/
+.DS_Store
+.vagrant
+node_modules

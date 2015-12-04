@@ -1,0 +1,13 @@
+
+export NODE_ENV=test   # Options: [local, dev, staging, test, production]
+
+## Make sure the below never make it into any of the other .envvars files
+## these are for local dev only
+export PGHOST="postgres"
+export PGUSER="postgres"
+export PGPASSWORD=$POSTGRES_PASSWORD
+
+export DB_NAME="hack_test"
+export DB_USER="hack_test"
+export DB_PASS="insecuredevpassword"
+export DB_HOST="postgres"

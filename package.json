@@ -1,0 +1,55 @@
+{
+  "name": "api",
+  "version": "1.0.0",
+  "description": "The backend API",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "./bin/run-tests.sh",
+    "gulp": "./node_modules/.bin/gulp"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/arg-hack-a-thon/api.git"
+  },
+  "author": "ZGLabs",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/arg-hack-a-thon/api/issues"
+  },
+  "homepage": "https://github.com/arg-hack-a-thon/api",
+  "dependencies": {
+    "async": "^1.4.2",
+    "aws-sdk": "^2.2.19",
+    "babel": "^5.8.23",
+    "bcrypt": "^0.8.5",
+    "bluebird": "^2.10.2",
+    "boom": "^2.9.0",
+    "confidence": "^1.4.2",
+    "glue": "^2.3.0",
+    "good": "^6.4.0",
+    "good-console": "^5.1.0",
+    "hapi": "^10.1.0",
+    "hapi-auth-jwt2": "^5.0.7",
+    "hapi-sequelize": "^2.2.1",
+    "hapi-swagger": "^2.0.0",
+    "hoek": "^2.16.3",
+    "inert": "^3.0.1",
+    "joi": "^6.9.0",
+    "jsonwebtoken": "^5.4.0",
+    "lodash": "^3.10.1",
+    "pg": "^4.4.2",
+    "pg-hstore": "^2.3.2",
+    "query-string": "^3.0.0",
+    "sequelize": "^3.9.0",
+    "sqlizr": "^1.1.0",
+    "vision": "^3.0.0"
+  },
+  "devDependencies": {
+    "babel-core": "^5.8.25",
+    "code": "^1.5.0",
+    "form-data": "^0.2.0",
+    "lab": "^6.1.0",
+    "stream-to-promise": "^1.0.4"
+  }
+}

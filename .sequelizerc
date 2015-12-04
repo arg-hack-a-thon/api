@@ -1,0 +1,18 @@
+require("babel/register");
+
+var AppConfig = require('./server/config');
+var _ = require('lodash')
+
+console.log('NODE_ENV: ' + process.env.NODE_ENV);
+
+var connectionTemplate = _.template("<%= dialect %>://<%= user %>:<%= pass %>@<%= host %>:<%= port %>/<%= name %>");
+
+process.env.DB_CONNECTION_STRING = connectionTemplate(AppConfig.get('/db/sequelize'))
+
+console.log('Migrations Connection: ' + process.env.DB_CONNECTION_STRING);
+
+module.exports = {
+  'env': 'all',
+  'config': 'migrations.json',
+  'migrations-path': 'migrations'
+}

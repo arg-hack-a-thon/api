@@ -1,0 +1,5 @@
+{
+  "all": {
+      "use_env_variable": "DB_CONNECTION_STRING"
+  }
+}

@@ -1,0 +1,18 @@
+## This file will be included by our bin/dev.sh
+## file and can be used to overload or add an ENV
+## vars before our app starts
+
+export DEBUGGER=true    # Options: [true, false]
+export DEBUG_BRK=false  # Options: [true, false]
+export NODE_ENV=local   # Options: [local, dev, staging, production]
+
+## Make sure the below never make it into any of the other .envvars files
+## these are for local dev only
+export PGHOST="postgres"
+export PGUSER="postgres"
+export PGPASSWORD=$POSTGRES_PASSWORD
+
+export DB_NAME="hack"
+export DB_USER="hack"
+export DB_PASS="insecuredevpassword"
+export DB_HOST="postgres"

@@ -1,0 +1,24 @@
+db_data:
+  image: busybox
+  volumes:
+    - /var/lib/postgresql/data
+db:
+  image: postgres:9.4.4
+  environment:
+    POSTGRES_PASSWORD: notsosecretpassword
+  volumes_from:
+    - db_data
+  ports:
+    - '5432:5432'
+api:
+  build: .
+  environment:
+    POSTGRES_PASSWORD: notsosecretpassword
+  volumes:
+    - /projects/api:/opt/app
+  ports:
+    - "8010:8010"
+    - "8989:8989"
+    - "5353:5353"
+  links:
+    - db:postgres
