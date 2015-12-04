@@ -1,4 +1,6 @@
-# Getting Started
+# API
+
+## Getting Started
 
 1. Install dependencies 
 	
@@ -21,13 +23,20 @@
     brew install docker-rsync
     ```
 
-4. Edit Host file
+4. Set the configuration
+	
+	```
+	ln -s ./envs/.envvars.local .envvars
+	```
+
+
+5. Edit Host file
 
     ```
     echo "$(docker-machine ip default) docker.local" > /tmp/whatever; sudo sh -c "cat /tmp/whatever >> /etc/hosts"
     ```
 
-5. Start API Server
+6. Start API Server
 
     ```
     cd <path_to_cloned_stuff>/api
@@ -36,19 +45,21 @@
     make up
     ```
 
-# Work flow
+## Workflow
 
 ### Stop working
-
-```
-docker-machine stop default
-```
+	
+When you want to stop the intermediate machine
+	
+	docker-machine stop default
+	
 
 ### Resume working
 
-```
-docker-machine start default
-```
+When you want to start the intermediate machine
+
+	docker-machine start default
+
 
 ### Installing new NPM modules
 
