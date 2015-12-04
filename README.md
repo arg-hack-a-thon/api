@@ -49,3 +49,22 @@ docker-machine stop default
 ```
 docker-machine start default
 ```
+
+### Installing new NPM modules
+
+npm modules live inside of the container so you must
+	
+	# run docker ps and get the dockerID - in this case the API machine (api_api)
+    docker ps    
+    # get inside the container by running
+    docker exec -it <dockerID> bash
+    # install the npm dependencies you need 
+    npm install --save [package-name]
+    # Then check the package.json
+    cat package.json
+    # copy the contents, and replace/update the package.json on your host machine
+    
+    
+    
+   
+    
