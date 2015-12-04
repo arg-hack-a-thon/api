@@ -78,7 +78,7 @@ vagrant up --no-parallel
 
 ### Access app
 
-You should now be able to access the hello world module that the skeleton ships with by going to http://docker.local:8006/hello.
+You should now be able to access the hello world module that the skeleton ships with by going to http://docker.local:8010/documentation.
 
 ## Local Development Tasks
 
@@ -115,14 +115,14 @@ The Vagrant config will rsync the application to the Docker host, and mount the 
 To make sure that you file changes are sent to the Container, you should run the following and it will stay running, watching the project folder for changes and syncing them.
 
 ```bash
-vagrant rsync-auto
+make sync
 ```
 
 ### Installing NPM Modules
 
 Get a shell inside the container, and use `npm install --save MODULE` or `npm install --save-dev MODULE` to install it inside the container.
 
-**IMPORTANT NOTE:** Since `vagrant rsync-auto` is not bi-directional, after you are done installing, make sure you bring the modified `package.json` back to the host by copying the output of `cat package.json` and pasting it into your local file system so it can be comitted to Git.
+**IMPORTANT NOTE:** Since `make sync` is not bi-directional, after you are done installing, make sure you bring the modified `package.json` back to the host by copying the output of `cat package.json` and pasting it into your local file system so it can be comitted to Git.
 
 ### Debugging
 
@@ -134,7 +134,7 @@ export DEBUGGER=true
 
 Once the app has been started with the Debugger turned on, you can connect to the debugger at the following URL:
 
-http://docker.local:8386/debug?ws=docker.local:8386&port=5356
+http://docker.local:8989/debug?ws=docker.local:8989&port=5353
 
 ## Database Migrations
 
