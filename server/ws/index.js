@@ -28,7 +28,8 @@ exports.register = (server, options, next) => {
     }, (error, response, body) => {
       if (error) {
         setTimeout(fetch, 100);
-        return console.log(error);
+        //console.log(error);
+        return;
       }
 
       if (response.statusCode == 200) {
