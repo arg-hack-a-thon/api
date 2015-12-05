@@ -27,6 +27,7 @@ exports.register = (server, options, next) => {
       encoding: null
     }, (error, response, body) => {
       if (error) {
+        setTimeout(fetch, 100);
         return console.log(error);
       }
 
