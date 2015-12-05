@@ -25,6 +25,7 @@ const config = {
   },
 
   connection : {
+    labels : 'api',
     port : '8010',
     host : '0.0.0.0'
   },
@@ -33,6 +34,12 @@ const config = {
     doorCoil : '2049',
     doorIP : '10.0.1.130',
     doorPort : 502,
+  },
+
+  socketConnection : {
+    labels : 'socket',
+    port : '8011',
+    host : '0.0.0.0'
   },
 
   api: {

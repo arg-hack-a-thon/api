@@ -4,7 +4,10 @@ import Joi from 'joi';
 import Sequelize from 'sequelize';
 
 exports.register = (server, options, next) => {
-  server.route({
+
+  const api = server.select('api');
+
+  api.route({
     method: 'POST',
     path: '/user',
     config: {
@@ -51,7 +54,7 @@ exports.register = (server, options, next) => {
     }
   });
 
-  server.route({
+  api.route({
     method: 'GET',
     path: '/user/me',
     config: {
@@ -78,7 +81,7 @@ exports.register = (server, options, next) => {
     }
   });
 
-  server.route({
+  api.route({
     method: 'PUT',
     path: '/user/{id}',
     config: {

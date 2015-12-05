@@ -11,10 +11,10 @@ const criteria = {
 const manifest = {
   $meta: 'Our main server manifest',
   server: AppConfig.get('/server'),
-  connections: [{
-    host: AppConfig.get('/connection/host'),
-    port: AppConfig.get('/connection/port')
-  }],
+  connections: [
+    AppConfig.get('/connection'),
+    AppConfig.get('/socketConnection')
+  ],
   plugins: {
     'inert': {},
     'vision': {},
@@ -25,6 +25,7 @@ const manifest = {
     './api/auth': {},
     './api/user': {},
     './api/door': {},
+    './ws': {},
     'hapi-swagger': AppConfig.get('/api/swagger')
   }
 };

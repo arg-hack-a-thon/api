@@ -43,5 +43,6 @@ RUN cp -a /tmp/app/node_modules $PROJECT_ROOT
 
 ## expose app port
 EXPOSE 8010
+EXPOSE 8011
 
 CMD ["bin/start.sh"]
