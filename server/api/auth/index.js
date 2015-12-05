@@ -6,13 +6,15 @@ import Boom from 'boom';
 
 exports.register = (server, options, next) => {
 
-  server.auth.strategy('jwt', 'jwt', true, {
+  const api = server.select('api');
+
+  api.auth.strategy('jwt', 'jwt', true, {
     key: AppConfig.get('/security/jwtSecret'),
     validateFunc: require('./strategies/jwt'),
     verifyOptions: { algorithms: [ 'HS256' ] }
   });
 
-  server.route({
+  api.route({
     method: 'POST',
     path: '/auth',
     config: {

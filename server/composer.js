@@ -12,8 +12,9 @@ const Composer = Glue.compose.bind(Glue, Manifest.get('/'), composeOptions);
 if (process.env.NODE_ENV != 'test') {
   Composer((err, server) => {
     if (err) throw err;
+    const api = server.select('api');
     server.start(() => {
-      server.log(['server', 'info'], 'Server started at ' + server.info.uri);
+      server.log(['server', 'info'], 'Server started at ' + api.info.uri);
     });
   })
 }
