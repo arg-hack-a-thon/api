@@ -7,7 +7,7 @@ import Redis from 'ioredis';
 
 exports.register = (server, options, next) => {
 
-  const subRedis = server.plugins.redis.redis;
+  const subRedis = server.plugins.redis.client;
   const io = SocketIo(server.select('socket').listener);
 
   io.set('origins', '*:*');
@@ -40,5 +40,5 @@ exports.register = (server, options, next) => {
 }
 
 exports.register.attributes = {
-  name: 'ws',
+  name: 'websocket',
 }

@@ -5,6 +5,7 @@ import AppConfig from '../config';
 import Modbus from 'jsmodbus';
 import Boom from 'boom';
 import Redis from 'ioredis';
+import request from 'request';
 
 exports.register = (server, options, next) => {
 
@@ -19,7 +20,7 @@ exports.register = (server, options, next) => {
     function( err ) {
       // If there's an error, handle it
       if ( err ) {
-        console.log( "Error creating TCP Modbus client" ); 
+        console.log( "Error creating TCP Modbus client" );
         console.log( err );
       }
     }
@@ -32,7 +33,7 @@ exports.register = (server, options, next) => {
   const pubRedis = new Redis( redisConfig );
 
   // PLC Heartbeat function
-  var heartbeat = function() {
+  (function heartbeat() {
     // Do ping
     session.pingHost( config.doorIP, function( error, target ) {
       // If there's an error, then the PLC is offline
@@ -44,16 +45,12 @@ exports.register = (server, options, next) => {
       }
     });
     // Call ourselves again
-    setTimeout(function(){
-      heartbeat();
-    }, 1000);
-  }
-  // Start the loop
-  heartbeat();
+    setTimeout(heartbeat, 1000);
+  })();
 
 
   // PLC Status function
-  var status = function() {
+  (function status() {
     // Read the coils status ( Open door, Door opening )
     client.readCoils( config.doorCoil, 8, function( resp, err ) {
       // TODO: Maybe check the kind of error
@@ -65,12 +62,30 @@ exports.register = (server, options, next) => {
       pubRedis.publish( 'status', resp );
     });
     // Call ourselves again
-    setTimeout(function(){
-      status();
-    }, 500);
-  }
-  // Start the loop
-  status();
+    setTimeout(status, 500);
+  })();
+
+  (function fetch () {
+    // console.log('Getting image from webcam');
+
+    request({
+      url: 'http://10.0.1.30/snapshot.cgi',
+      method: 'GET',
+      encoding: null
+    }, (error, response, body) => {
+
+      if (!error && response.statusCode == 200) {
+        const base64Data = body.toString('base64');
+        const contentType = response.headers["content-type"];
+        const imageData = `data:${contentType};base64,${base64Data}`;
+
+        pubRedis.publish( 'image', imageData );
+        // io.sockets.emit('image', imageData);
+      }
+
+      setTimeout(fetch, 100);
+    })
+  })();
 
 
   next();

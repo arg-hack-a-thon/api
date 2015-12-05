@@ -13,7 +13,7 @@ exports.register = (plugin, options, next) => {
 
   const redis = new Redis(options);
 
-  plugin.expose('redis', redis);
+  plugin.expose('client', redis);
 
   next();
 
