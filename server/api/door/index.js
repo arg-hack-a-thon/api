@@ -17,14 +17,12 @@ exports.register = (server, options, next) => {
       tags: ['api', 'door', 'open'],
       description: 'Makes the door open magically',
       notes: 'Takes auth info, and if everything\'s okay, it opens the door (with magic).',
-      auth: false,
       cors: false,
-      // validate: {
-      //   payload: {
-      //     address: Joi.number().required(),
-      //     range: Joi.number().required()
-      //   }
-      // },
+      validate: {
+        headers: Joi.object({
+          'authorization': Joi.string().required()
+        }).unknown(),
+      },
       plugins: {
         'hapi-swagger': {
           'responseMessages': [
