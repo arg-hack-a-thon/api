@@ -39,6 +39,7 @@
     "jsmodbus": "^0.4.0",
     "jsonwebtoken": "^5.4.0",
     "lodash": "^3.10.1",
+    "net-ping": "^1.1.12",
     "pg": "^4.4.2",
     "pg-hstore": "^2.3.2",
     "query-string": "^3.0.0",
