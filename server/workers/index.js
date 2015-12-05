@@ -4,12 +4,13 @@ import Ping from 'net-ping';
 import AppConfig from '../config';
 import Modbus from 'jsmodbus';
 import Boom from 'boom';
+import Redis from 'ioredis';
 
 exports.register = (server, options, next) => {
 
   // Get the config options
   const config = AppConfig.get('/plc');
-
+  const redisConfig = AppConfig.get('/redis');
 
   // Initialize the Modbus TCP client
   const client = Modbus.createTCPClient(
@@ -18,32 +19,34 @@ exports.register = (server, options, next) => {
     function( err ) {
       // If there's an error, handle it
       if ( err ) {
-        throw Boom.badImplementation({ message: "Error creating TCP Modbus client", data: err });
+        console.log( "Error creating TCP Modbus client" ); 
+        console.log( err );
       }
     }
   );
 
-
   // Initialize net-ping instance/session
   const session = Ping.createSession();
 
+  // Initialize Redis connection
+  const pubRedis = new Redis( redisConfig );
 
   // PLC Heartbeat function
   var heartbeat = function() {
     // Do ping
     session.pingHost( config.doorIP, function( error, target ) {
       // If there's an error, then the PLC is offline
-      if (error)
-        console.log (target + " : " + error.toString());
-      else {
+      if (error) {
+        pubRedis.publish( 'heartbeat', 0 );
+      } else {
         // Else everything's alright
-        console.log (target + " : HEARTBEAT");
+        pubRedis.publish( 'heartbeat', 1 );
       }
     });
     // Call ourselves again
     setTimeout(function(){
       heartbeat();
-    }, 100);
+    }, 1000);
   }
   // Start the loop
   heartbeat();
@@ -53,12 +56,13 @@ exports.register = (server, options, next) => {
   var status = function() {
     // Read the coils status ( Open door, Door opening )
     client.readCoils( config.doorCoil, 8, function( resp, err ) {
-      // TODO: Return different BOOMS! depending on the type of error
+      // TODO: Maybe check the kind of error
       if ( err ) {
-        throw Boom.badImplementation({ message: "Error reading coils", data: err });
+        console.log( "Error reading coils" );
+        console.log( err );
       }
-      // TODO: Replace this with socket magic
-      console.log( resp );
+      // Publish the status to redis
+      pubRedis.publish( 'status', resp );
     });
     // Call ourselves again
     setTimeout(function(){
@@ -67,6 +71,9 @@ exports.register = (server, options, next) => {
   }
   // Start the loop
   status();
+
+
+  next();
 
 }
 
