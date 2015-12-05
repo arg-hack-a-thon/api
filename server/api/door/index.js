@@ -6,18 +6,17 @@ import Boom from 'boom';
 import AppConfig from '../../config';
 
 exports.register = (server, options, next) => {
-  
-  // const api = server.select('api');
-  // api.route({
 
-  server.route({
+  const api = server.select('api');
+
+  api.route({
     method: 'POST',
     path: '/door/open',
     config: {
       tags: ['api', 'door', 'open'],
       description: 'Makes the door open magically',
       notes: 'Takes auth info, and if everything\'s okay, it opens the door (with magic).',
-      cors: false,
+      cors: true,
       validate: {
         headers: Joi.object({
           'authorization': Joi.string().required()
@@ -42,7 +41,7 @@ exports.register = (server, options, next) => {
           function( err ) {
             // If there's an error, handle it
             if ( err ) {
-              throw Boom.badImplementation({ message: "Error creating TCP Modbus client", data: err });
+              return reply(Boom.badImplementation({ message: "Error creating TCP Modbus client", data: err }));
             }
           }
         );
@@ -50,10 +49,13 @@ exports.register = (server, options, next) => {
         // Write to M1 (2049) and set it to true
         client.writeSingleCoil( config.doorCoil, true, function( resp, err ) {
           if ( err ) {
-            Boom.badImplementation({ message: "Error writing to door coil", data: err });
+            return reply(Boom.badImplementation({ message: "Error writing to door coil", data: err }));
           }
-          reply({message: "Door should have opened successfully", data: resp});
+
+          reply({message: "Door should have opened successfully"});
         })
+
+        // reply({test: "WHAMMMMY"});
 
         // This is how you should read a coil:
         // client.readCoils( request.payload.address, request.payload.range, function( resp, err ) {
