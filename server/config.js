@@ -42,6 +42,11 @@ const config = {
     host : '0.0.0.0'
   },
 
+  redis : {
+    port: 6379,
+    host: process.env.REDIS_PORT_6379_TCP_ADDR
+  },
+
   api: {
     swagger: {
       info: {

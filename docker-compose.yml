@@ -2,6 +2,7 @@ db_data:
   image: busybox
   volumes:
     - /var/lib/postgresql/data
+
 db:
   image: postgres:9.4.4
   environment:
@@ -10,6 +11,17 @@ db:
     - db_data
   ports:
     - '5432:5432'
+
+redis_data:
+  image: busybox
+  volumes:
+    - /data
+
+redis:
+  image: redis:3.0.5
+  volumes_from:
+    - redis_data
+
 api:
   build: .
   environment:
@@ -23,3 +35,4 @@ api:
     - "5353:5353"
   links:
     - db:postgres
+    - redis:redis
