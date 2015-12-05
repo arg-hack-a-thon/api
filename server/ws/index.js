@@ -2,10 +2,10 @@
 
 import SocketIo from 'socket.io';
 import Http from 'http';
-import axios from 'axios';
+import request from 'request';
 
 exports.register = (server, options, next) => {
-  
+
   var io = SocketIo(server.select('socket').listener);
 
   io.set('origins', '*:*');
@@ -16,55 +16,31 @@ exports.register = (server, options, next) => {
     socket.on('disconnect', function () {
       console.log('user disconnected');
     });
-
-    (function fetch () {
-      console.log('Getting image from webcam');
-
-      axios.get('http://10.0.1.30/snapshot.cgi',{
-        responseType: 'blob'
-      })
-      .then(response => {
-        console.log(response.data)
-      })
-
-      /*
-      Http.get({
-          host: '10.0.1.30',
-          path: '/snapshot.cgi'
-      }, function (res) {
-          console.log('Webcam returned a response.');
-          var data = [];
-          var totalLength = 0;
-
-//console.log(res);
-          res.setEncoding('binary');
-          res.on('data', function (chunk) {
-              console.log('chunk', chunk);
-              data.push( chunk );
-              totalLength += chunk.length;
-              //data += chunk.toString('base64');
-          });
-
-          res.on('end', function () {
-              console.log('No more data, sending through the socket...');
-              // var encoded = new Buffer(data).toString('base64');
-              var bufA = Buffer.concat(data);
-              var encoded = bufA.toString('base64');
-              console.log(encoded.substring(0, 40) + '...' + encoded.substring(encoded.length, encoded.length - 40));
-              socket.emit('image', encoded);
-              console.log('Done.');
-          });
-
-          //setTimeout(fetch, 1000);
-
-          return;
-      });
-      */
-
-    })();
-
-    return;
   });
+
+  (function fetch () {
+    // console.log('Getting image from webcam');
+
+    request({
+      url: 'http://10.0.1.30/snapshot.cgi',
+      method: 'GET',
+      encoding: null
+    }, (error, response, body) => {
+      if (error) {
+        return console.log(error);
+      }
+
+      if (response.statusCode == 200) {
+        const base64Data = body.toString('base64');
+        const contentType = response.headers["content-type"];
+        const imageData = `data:${contentType};base64,${base64Data}`;
+
+        io.sockets.emit('image', imageData);
+
+        setTimeout(fetch, 100);
+      }
+    })
+  })();
 
   next();
 }
