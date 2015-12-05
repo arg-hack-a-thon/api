@@ -20,6 +20,7 @@ const manifest = {
     'vision': {},
     'good': AppConfig.get('/logging'),
     'hapi-auth-jwt2': {},
+    './redis': AppConfig.get('/redis'),
     './sequelize': AppConfig.get('/db/sequelize'),
     './common': {},
     './api/auth': {},
