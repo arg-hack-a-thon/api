@@ -24,6 +24,7 @@ const manifest = {
     './common': {},
     './api/auth': {},
     './api/user': {},
+    './api/door': {},
     './ws': {},
     'hapi-swagger': AppConfig.get('/api/swagger')
   }

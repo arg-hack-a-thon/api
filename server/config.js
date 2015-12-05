@@ -30,6 +30,12 @@ const config = {
     host : '0.0.0.0'
   },
 
+  plc : {
+    doorCoil : '2049',
+    doorIP : '10.0.1.130',
+    doorPort : 502,
+  },
+
   socketConnection : {
     labels : 'socket',
     port : '8011',
