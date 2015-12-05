@@ -25,7 +25,14 @@ const config = {
   },
 
   connection : {
+    labels : 'api',
     port : '8010',
+    host : '0.0.0.0'
+  },
+
+  socketConnection : {
+    labels : 'socket',
+    port : '8011',
     host : '0.0.0.0'
   },
 
